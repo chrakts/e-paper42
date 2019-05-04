@@ -52,9 +52,10 @@ typedef pictureComp PICTURECOMP ;
 
 class Paint {
 public:
-    Paint(unsigned char* image, int width, int height);
+    Paint(volatile unsigned char* image, int width, int height);
     ~Paint();
     void Clear(int colored);
+    void ClearFast(void);
     int  GetWidth(void);
     void SetWidth(int width);
     int  GetHeight(void);

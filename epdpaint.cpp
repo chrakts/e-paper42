@@ -26,8 +26,9 @@
 
 #include <avr/pgmspace.h>
 #include "epdpaint.h"
+#include "ledHardware.h"
 
-Paint::Paint(unsigned char* image, int width, int height) {
+Paint::Paint(volatile unsigned char* image, int width, int height) {
     this->rotate = ROTATE_0;
     this->image = image;
     /* 1 byte = 8 pixels, so the width should be the multiple of 8 */
@@ -50,6 +51,20 @@ void Paint::Clear(int colored) {
 }
 
 /**
+ *  @brief: clear the image
+ */
+void Paint::ClearFast(void)
+{
+    AUX4_OFF;
+    //for (int i = 0; i < 15000; i++)
+    for (int i = 0; i < ((this->width)/8)*this->height; i++)
+    {
+      this->image[i] = 0xff;
+    }
+    AUX4_ON;
+}
+
+/**
  *  @brief: this draws a pixel by absolute coordinates.
  *          this function won't be affected by the rotate parameter.
  */
@@ -63,15 +78,15 @@ int pointer;
     }
     if (IF_INVERT_COLOR) {
         if (colored) {
-            image[pointer] |= 0x80 >> (x % 8);
+            this->image[pointer] |= 0x80 >> (x % 8);
         } else {
-            image[pointer] &= ~(0x80 >> (x % 8));
+            this->image[pointer] &= ~(0x80 >> (x % 8));
         }
     } else {
         if (colored) {
-            image[pointer] &= ~(0x80 >> (x % 8));
+            this->image[pointer] &= ~(0x80 >> (x % 8));
         } else {
-            image[pointer] |= 0x80 >> (x % 8);
+            this->image[pointer] |= 0x80 >> (x % 8);
         }
     }
 }
@@ -180,7 +195,7 @@ void Paint::DrawPixel(int x, int y, int colored) {
  *  @brief: this draws a character on the frame buffer but not refresh
  */
 void Paint::DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored) {
-    int i, j;
+    unsigned int i, j;
     unsigned int char_offset = (ascii_char - ' ') * font->Height * (font->Width / 8 + (font->Width % 8 ? 1 : 0));
     const unsigned char* ptr = &font->table[char_offset];
 
