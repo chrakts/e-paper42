@@ -29,6 +29,7 @@
 #define EPDIF_H
 
 //#include <arduino.h>
+#include "spi_driver.h"
 #include "SPI.h"
 
 // Pin definition
@@ -38,13 +39,20 @@ public:
     EpdIf(void);
     ~EpdIf(void);
 
-    int  IfInit(void);
+    int      IfInit(SPI_Master_t *spi);
+    uint8_t  IfTransferPacket();
+    void     IfFillingData(unsigned char data,uint32_t len);
+    void     IfTransferingData(uint8_t * data,uint32_t len);
+
 /*    static void DigitalWrite(int pin, int value);
     static int  DigitalRead(int pin);*/
 
     void SpiTransfer(unsigned char data);
 private:
     SPI *epSPI;
+    SPI_Master_t *epSpiMaster;
+protected:
+    SPI_DataPacket_t dataPacket;
 };
 
 #endif

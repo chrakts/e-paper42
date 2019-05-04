@@ -48,12 +48,13 @@ int EpdIf::DigitalRead(int pin) {
 void EpdIf::SpiTransfer(unsigned char data) {
 //    digitalWrite(CS_PIN, LOW);
     CS_PORT.OUTCLR = CS_PIN;
-    epSPI->transfer((uint8_t)data);
+    SPI_MasterTransceiveByte(epSpiMaster, data);
+//    epSPI->transfer((uint8_t)data); ****************************
 //    digitalWrite(CS_PIN, HIGH);
     CS_PORT.OUTSET = CS_PIN;
 }
 
-int EpdIf::IfInit(void) {
+int EpdIf::IfInit(SPI_Master_t *spi) {
 /*    pinMode(CS_PIN, OUTPUT);
     pinMode(RST_PIN, OUTPUT);
     pinMode(DC_PIN, OUTPUT);*/
@@ -63,8 +64,41 @@ int EpdIf::IfInit(void) {
 //    pinMode(BUSY_PIN, INPUT);
     BUSY_PORT.DIRCLR  = BUSY_PIN;
     //epSPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-    epSPI = new SPI(0);
-    epSPI->begin();
+    //epSPI = new SPI(0); // ***************
+    //epSPI->begin(); // ***************
+    epSpiMaster = spi;
+    SPI_MasterCreateDataPacket(&dataPacket,NULL,NULL,0,&CS_PORT,CS_PIN);
     return 0;
 }
+
+uint8_t EpdIf::IfTransferPacket()
+{
+  return( SPI_MasterInterruptTransceivePacket(epSpiMaster,&dataPacket) );
+}
+
+void EpdIf::IfFillingData(unsigned char data,uint32_t len)
+{
+    dataPacket.bytesToTransceive = len;
+    dataPacket.singleByte = data;
+    dataPacket.receiveData = NULL;
+    dataPacket.transmitData = NULL;
+//    dataPacket.complete = false;
+    dataPacket.bytesTransceived = 0;
+    epSpiMaster->dataPacket = NULL;
+    IfTransferPacket();
+}
+
+void EpdIf::IfTransferingData(uint8_t * data,uint32_t len)
+{
+    dataPacket.bytesToTransceive = len;
+    dataPacket.singleByte = 0;
+    dataPacket.receiveData = NULL;
+    dataPacket.transmitData = data;
+//    dataPacket.complete = false;
+    dataPacket.bytesTransceived = 0;
+    epSpiMaster->dataPacket = NULL;
+    IfTransferPacket();
+}
+
+
 
