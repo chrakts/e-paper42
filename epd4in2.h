@@ -28,6 +28,7 @@
 #define EPD4IN2_H
 
 #include "epdif.h"
+#include "spi_driver.h"
 
 // Display resolution
 #define EPD_WIDTH       400
@@ -72,7 +73,10 @@
 #define ACTIVE_PROGRAMMING                          0xA1
 #define READ_OTP                                    0xA2
 #define POWER_SAVING                                0xE3
-
+enum{NOTHING=0,CLEAR1,CLEAR2,CLEAR3,CLEAR4,CLEAR5,CLEAR6,CLEAR7,CLEAR8,CLEAR9,
+      DISPLAYFRAME1,DISPLAYFRAME2,DISPLAYFRAME3,DISPLAYFRAME4,DISPLAYFRAME5,DISPLAYFRAME6,DISPLAYFRAME7,DISPLAYFRAME8,
+      SLEEP1,SLEEP2,SLEEP3,SLEEP4,SLEEP5,SLEEP6,SLEEP7,
+      RESET1,RESET2,RESET3,RESET4,RESET5,RESET6,RESET7,RESET8,RESET9,RESET10};
 extern const unsigned char lut_vcom0[];
 extern const unsigned char lut_ww[];
 extern const unsigned char lut_bw[];
@@ -86,21 +90,33 @@ public:
 
     Epd();
     ~Epd();
-    int  Init(void);
+    int  Init(SPI_Master_t *spiMaster);
     void SendCommand(unsigned char command);
     void SendData(unsigned char data);
+    void FillingData(unsigned char data,uint32_t len);
+    void FillingCompleteData(unsigned char data);
+    void TransferingData(uint8_t *  data,uint32_t len);
+    void TransferingCompleteData(const uint8_t *  data);
+    uint8_t SpiTransferReady();
     void WaitUntilIdle(void);
+    uint8_t getIdle(void);
     void Reset(void);
     void SetPartialWindow(const unsigned char* frame_buffer, int x, int y, int w, int l);
     void SetPartialWindowBlack(const unsigned char* buffer_black, int x, int y, int w, int l);
     void SetPartialWindowRed(const unsigned char* buffer_red, int x, int y, int w, int l);
     void SetLut(void);
     void DisplayFrame(const unsigned char* frame_buffer);
+    int8_t DisplayFrameStep(unsigned char* frame_buffer);
     void DisplayFrame(void);
     void ClearFrame(void);
+    int8_t ClearFrameStep(void);
     void Sleep(void);
+    int8_t SleepStep(void);
+    int8_t ResetStep(void);
+
 
 private:
+    uint8_t status = NOTHING;
 //    unsigned int reset_pin;
 //    unsigned int dc_pin;
 //    unsigned int cs_pin;
