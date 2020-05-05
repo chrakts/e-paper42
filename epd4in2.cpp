@@ -314,13 +314,11 @@ int8_t Epd::DisplayFrameStep(unsigned char* frame_buffer)
     case DISPLAYFRAME3:
       SendCommand(DATA_START_TRANSMISSION_2);
 //      TransferingCompleteData(frame_buffer);
-      LEDROT_ON;
 //      TransferingData(globalImage,15000);
       for(uint16_t i = 0; i < 15000; i++)
         {
             SendData(frame_buffer[i]);
         }
-      LEDROT_OFF;
 
       status += 1;
       status += 1;
@@ -329,7 +327,6 @@ int8_t Epd::DisplayFrameStep(unsigned char* frame_buffer)
       if(SpiTransferReady()==true)
       {
         status += 1;
-        LEDROT_OFF;
       }
     break;
     case DISPLAYFRAME5:
@@ -449,6 +446,40 @@ void Epd::DisplayFrame(void) {
     SendCommand(DISPLAY_REFRESH);
     _delay_ms(100);
     WaitUntilIdle();
+}
+
+/**
+ * @brief: This displays the frame data from SRAM
+ */
+int8_t Epd::DisplayFrameStep(void) {
+  switch(status)
+  {
+    case NOTHING:
+      SetLut();
+      SendCommand(DISPLAY_REFRESH);
+      isDisplayReady = false;
+      MyTimers[DISPLAY_READY_TIMER].value = 10;
+      MyTimers[DISPLAY_READY_TIMER].state = TM_START;
+      status = DISPLAYSHOW1;
+    break;
+    case DISPLAYSHOW1:
+      if(isDisplayReady==true)
+        status++;
+    break;
+    case DISPLAYSHOW2:
+      if(getIdle()==1)
+        status = NOTHING;
+    break;
+    case DISPLAYSHOW3:
+    break;
+    case DISPLAYSHOW4:
+    break;
+    case DISPLAYSHOW5:
+    break;
+    case DISPLAYSHOW6:
+    break;
+  }
+  return(status);
 }
 
 /**

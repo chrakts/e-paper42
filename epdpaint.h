@@ -64,6 +64,7 @@ public:
     void SetRotate(int rotate);
     unsigned char* GetImage(void);
     void DrawAbsolutePixel(int x, int y, int colored);
+    void DrawPicture(PICTURECOMP *picture,uint16_t x, uint16_t y);
     void DrawPicture(const unsigned char *compImage,uint16_t len);
     void DrawPixel(int x, int y, int colored);
     void DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored);

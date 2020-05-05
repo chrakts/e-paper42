@@ -3,7 +3,7 @@ picRaw = list()
 picComp = list()
 
 directory = "/home/chrak/Daten/Software/repositories/ePaperTerminal/pictures/"
-name = "email"
+name = "oil-temperature"
 fnRaw = name+'.raw'
 fnCmp = name+'.cmp'
 varName = "image"+name.capitalize()
@@ -11,9 +11,9 @@ defName = 'IMAGE'+name.upper()+'_SIZE'
 with open(directory+fnRaw) as f:
     lines = f.read().splitlines()
 for l in lines:
-  for i in l.split(','):
+  for i in l.split('\\'):
     if i!='':
-      picRaw.append(int(i,16))
+      picRaw.append(int(i,8))
       counter+=1
 db = [0] * 256
 oldByte = -1

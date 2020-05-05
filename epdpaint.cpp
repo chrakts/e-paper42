@@ -92,6 +92,50 @@ int pointer;
 }
 
 /**
+ *  @brief: draws a compressed picture
+ *          this function won't be affected by the rotate parameter.
+ */
+void Paint::DrawPicture(PICTURECOMP *picture,uint16_t x, uint16_t y)
+{
+  uint16_t xCount=x,yCount=y;
+  uint16_t listPointer=0;
+  uint16_t targetByte;
+  uint16_t i;
+  uint8_t temp,number;
+  for(listPointer=0;listPointer<picture->len;listPointer++)
+  {
+    temp = pgm_read_byte( &picture->data[listPointer] );  //pgm_read_byte(&frame_buffer[i])
+    if( (temp!=0) && (temp != 255) )
+    {
+      targetByte = yCount*(this->width>>3)+(xCount>>3);
+      this->image[targetByte]=temp;
+      xCount+=8;
+      if(xCount-x>=picture->width)
+      {
+        xCount = x;
+        yCount++;
+      }
+    }
+    else
+    {
+      listPointer++;
+      number = (uint8_t)pgm_read_byte( &picture->data[listPointer] );
+      for(i=0;i<=number;i++)
+      {
+        targetByte = yCount*(this->width>>3)+(xCount>>3);
+        this->image[targetByte]=temp;
+        xCount+=8;
+        if(xCount-x>=picture->width)
+        {
+          xCount = x;
+          yCount++;
+        }
+      }
+    }
+  }
+}
+
+/**
  *  @brief: this draws a picture filling the whole display
  *          this function won't be affected by the rotate parameter.
  */

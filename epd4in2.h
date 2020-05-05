@@ -76,7 +76,9 @@
 enum{NOTHING=0,CLEAR1,CLEAR2,CLEAR3,CLEAR4,CLEAR5,CLEAR6,CLEAR7,CLEAR8,CLEAR9,
       DISPLAYFRAME1,DISPLAYFRAME2,DISPLAYFRAME3,DISPLAYFRAME4,DISPLAYFRAME5,DISPLAYFRAME6,DISPLAYFRAME7,DISPLAYFRAME8,
       SLEEP1,SLEEP2,SLEEP3,SLEEP4,SLEEP5,SLEEP6,SLEEP7,
-      RESET1,RESET2,RESET3,RESET4,RESET5,RESET6,RESET7,RESET8,RESET9,RESET10};
+      RESET1,RESET2,RESET3,RESET4,RESET5,RESET6,RESET7,RESET8,RESET9,RESET10,
+      DISPLAYSHOW1,DISPLAYSHOW2,DISPLAYSHOW3,DISPLAYSHOW4,DISPLAYSHOW5,DISPLAYSHOW6
+      };
 extern const unsigned char lut_vcom0[];
 extern const unsigned char lut_ww[];
 extern const unsigned char lut_bw[];
@@ -108,6 +110,7 @@ public:
     void DisplayFrame(const unsigned char* frame_buffer);
     int8_t DisplayFrameStep(unsigned char* frame_buffer);
     void DisplayFrame(void);
+    int8_t DisplayFrameStep(void);
     void ClearFrame(void);
     int8_t ClearFrameStep(void);
     void Sleep(void);
