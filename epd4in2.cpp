@@ -280,7 +280,7 @@ void Epd::DisplayFrame(const unsigned char* frame_buffer) {
 int8_t Epd::DisplayFrameStep(unsigned char* frame_buffer)
 {
 //  char startBytes[9]={0,0,(char)((EPD_WIDTH-1)>> 8),(char)((EPD_WIDTH-1)|0x0007),0,0,(char)((EPD_HEIGHT-1)>> 8),(char)((EPD_HEIGHT-1)|0x00ff),0x01};
-  char startBytes[9]={0,0,0x01,0x8f,0,0,0x01,0x2b,0x01};
+//  char startBytes[9]={0,0,0x01,0x8f,0,0,0x01,0x2b,0x01};
   switch(status)
   {
     case NOTHING:
