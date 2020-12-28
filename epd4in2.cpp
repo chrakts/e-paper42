@@ -76,8 +76,12 @@ int Epd::Init(SPI_Master_t *spiMaster) {
     SendCommand(POWER_ON);
     WaitUntilIdle();
     SendCommand(PANEL_SETTING);
-    SendData(0xbf);    // KW-BF   KWR-AF  BWROTP 0f
-    SendData(0x0b);
+    //SendData(0xbf);     // KW-BF   KWR-AF  BWROTP 0f
+#ifdef DISPLAY_FLIP
+      SendData(0x03);
+#else
+      SendData(0x0f);
+#endif
     SendCommand(PLL_CONTROL);
     SendData(0x3c);        // 3A 100HZ   29 150Hz 39 200HZ  31 171HZ
     /* EPD hardware init end */
@@ -397,7 +401,11 @@ int8_t Epd::ClearFrameStep(void)
         status += 1;
     break;
     case CLEAR2:
+#ifdef IF_INVERT_COLOR
+      FillingCompleteData(0x00);
+#else
       FillingCompleteData(0xff);
+#endif
       status += 1;
     break;
     case CLEAR3:
@@ -417,7 +425,11 @@ int8_t Epd::ClearFrameStep(void)
         status += 1;
     break;
     case CLEAR7:
+#ifdef IF_INVERT_COLOR
+      FillingCompleteData(0x00);
+#else
       FillingCompleteData(0xff);
+#endif
       status += 1;
     break;
     case CLEAR8:
@@ -566,8 +578,12 @@ int8_t Epd::ResetStep(void)
     break;
     case RESET10:
       SendCommand(PANEL_SETTING);
-      SendData(0xbf);    // KW-BF   KWR-AF  BWROTP 0f
-      SendData(0x0b);
+      //SendData(0xbf);    // KW-BF   KWR-AF  BWROTP 0f
+#ifdef DISPLAY_FLIP
+      SendData(RES_400x300 | BW | SHD_N | RST_N );
+#else
+      SendData(RES_400x300 | BW | UD | SHL | SHD_N | RST_N );
+#endif
       SendCommand(PLL_CONTROL);
       SendData(0x3c);    // 3A 100HZ   29 150Hz 39 200HZ  31 171HZ
       status = NOTHING;

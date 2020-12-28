@@ -27,6 +27,7 @@
 #include <avr/pgmspace.h>
 #include "epdpaint.h"
 #include "ledHardware.h"
+#include "ePaper42hardware.h"
 
 Paint::Paint(volatile unsigned char* image, int width, int height) {
     this->rotate = ROTATE_0;
@@ -59,7 +60,11 @@ void Paint::ClearFast(void)
     //for (int i = 0; i < 15000; i++)
     for (int i = 0; i < ((this->width)/8)*this->height; i++)
     {
+#ifdef IF_INVERT_COLOR
+      this->image[i] = 0x00;
+#else
       this->image[i] = 0xff;
+#endif
     }
     AUX4_ON;
 }
@@ -76,19 +81,19 @@ int pointer;
     if (x < 0 || x >= this->width || y < 0 || y >= this->height) {
         return;
     }
-    if (IF_INVERT_COLOR) {
-        if (colored) {
-            this->image[pointer] |= 0x80 >> (x % 8);
-        } else {
-            this->image[pointer] &= ~(0x80 >> (x % 8));
-        }
-    } else {
+#ifdef IF_INVERT_COLOR
         if (colored) {
             this->image[pointer] &= ~(0x80 >> (x % 8));
         } else {
             this->image[pointer] |= 0x80 >> (x % 8);
         }
-    }
+#else
+        if (colored) {
+            this->image[pointer] |= 0x80 >> (x % 8);
+        } else {
+            this->image[pointer] &= ~(0x80 >> (x % 8));
+        }
+#endif
 }
 
 /**
@@ -108,7 +113,11 @@ void Paint::DrawPicture(PICTURECOMP *picture,uint16_t x, uint16_t y)
     if( (temp!=0) && (temp != 255) )
     {
       targetByte = yCount*(this->width>>3)+(xCount>>3);
+#ifdef IF_INVERT_COLOR
+      this->image[targetByte]=~temp;
+#else
       this->image[targetByte]=temp;
+#endif
       xCount+=8;
       if(xCount-x>=picture->width)
       {
@@ -123,7 +132,11 @@ void Paint::DrawPicture(PICTURECOMP *picture,uint16_t x, uint16_t y)
       for(i=0;i<=number;i++)
       {
         targetByte = yCount*(this->width>>3)+(xCount>>3);
-        this->image[targetByte]=temp;
+#ifdef IF_INVERT_COLOR
+      this->image[targetByte]=~temp;
+#else
+      this->image[targetByte]=temp;
+#endif
         xCount+=8;
         if(xCount-x>=picture->width)
         {
@@ -160,7 +173,11 @@ void Paint::DrawPicture(const unsigned char *compImage,uint16_t len)
       {
         if(picPointer<15000)
         {
+#ifdef IF_INVERT_COLOR
+          this->image[picPointer]=~temp;
+#else
           this->image[picPointer]=temp;
+#endif
           picPointer++;
         }
       }
