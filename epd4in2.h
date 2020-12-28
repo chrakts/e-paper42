@@ -73,6 +73,22 @@
 #define ACTIVE_PROGRAMMING                          0xA1
 #define READ_OTP                                    0xA2
 #define POWER_SAVING                                0xE3
+
+#define RES_400x300 0b00000000
+#define RES_320x300 0b01000000
+#define RES_320x240 0b10000000
+#define RES_200x300 0b11000000
+
+#define RES1      (1<<7)
+#define RES0      (1<<6)
+#define REG_EN    (1<<5)
+#define BWR       (0)
+#define BW        (1<<4)
+#define UD        (1<<3)
+#define SHL       (1<<2)
+#define SHD_N     (1<<1)
+#define RST_N     (1<<0)
+
 enum{NOTHING=0,CLEAR1,CLEAR2,CLEAR3,CLEAR4,CLEAR5,CLEAR6,CLEAR7,CLEAR8,CLEAR9,
       DISPLAYFRAME1,DISPLAYFRAME2,DISPLAYFRAME3,DISPLAYFRAME4,DISPLAYFRAME5,DISPLAYFRAME6,DISPLAYFRAME7,DISPLAYFRAME8,
       SLEEP1,SLEEP2,SLEEP3,SLEEP4,SLEEP5,SLEEP6,SLEEP7,
