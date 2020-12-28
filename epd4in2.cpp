@@ -118,7 +118,7 @@ void Epd::FillingData(unsigned char data,uint32_t len)
 /**
  *  @brief: function for filling data
  */
-void Epd::FillingCompleteData(unsigned char data)
+void Epd::FillingCompleteData(const uint8_t data)
 {
 //    DC_PORT.OUTSET = DC_PIN;
     IfFillingData(data, (width * height)/ 8 );
@@ -127,7 +127,7 @@ void Epd::FillingCompleteData(unsigned char data)
 /**
  *  @brief: function for transfering data without receiving
  */
-void Epd::TransferingData(uint8_t *  data,uint32_t len)
+void Epd::TransferingData(const uint8_t *  data,uint32_t len)
 {
 //    DC_PORT.OUTSET = DC_PIN;
     IfTransferingData(data,len);

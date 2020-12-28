@@ -112,8 +112,8 @@ public:
     void SendCommand(unsigned char command);
     void SendData(unsigned char data);
     void FillingData(unsigned char data,uint32_t len);
-    void FillingCompleteData(unsigned char data);
-    void TransferingData(uint8_t *  data,uint32_t len);
+    void FillingCompleteData(const uint8_t data);
+    void TransferingData(const uint8_t *  data,uint32_t len);
     void TransferingCompleteData(const uint8_t *  data);
     uint8_t SpiTransferReady();
     void WaitUntilIdle(void);

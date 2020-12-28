@@ -29,7 +29,7 @@
 #include "ledHardware.h"
 #include "ePaper42hardware.h"
 
-Paint::Paint(volatile unsigned char* image, int width, int height) {
+Paint::Paint(uint8_t* image, int width, int height) {
     this->rotate = ROTATE_0;
     this->image = image;
     /* 1 byte = 8 pixels, so the width should be the multiple of 8 */

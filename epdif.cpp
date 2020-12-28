@@ -88,7 +88,7 @@ void EpdIf::IfFillingData(unsigned char data,uint32_t len)
     IfTransferPacket();
 }
 
-void EpdIf::IfTransferingData(uint8_t * data,uint32_t len)
+void EpdIf::IfTransferingData(const uint8_t * data,uint32_t len)
 {
     dataPacket.bytesToTransceive = len;
     dataPacket.singleByte = 0;

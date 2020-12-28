@@ -49,7 +49,7 @@ typedef pictureComp PICTURECOMP ;
 
 class Paint {
 public:
-    Paint(volatile unsigned char* image, int width, int height);
+    Paint(uint8_t* image, int width, int height);
     ~Paint();
     void Clear(int colored);
     void ClearFast(void);
@@ -75,7 +75,7 @@ public:
     void DrawFilledCircle(int x, int y, int radius, int colored);
 
 private:
-    unsigned char* image;
+    uint8_t* image;
     int width;
     int height;
     int rotate;

@@ -42,7 +42,7 @@ public:
     int      IfInit(SPI_Master_t *spi);
     uint8_t  IfTransferPacket();
     void     IfFillingData(unsigned char data,uint32_t len);
-    void     IfTransferingData(uint8_t * data,uint32_t len);
+    void     IfTransferingData(const uint8_t * data,uint32_t len);
 
 /*    static void DigitalWrite(int pin, int value);
     static int  DigitalRead(int pin);*/
