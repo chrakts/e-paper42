@@ -2,7 +2,7 @@ counter = 0
 picRaw = list()
 picComp = list()
 
-directory = "/home/chrak/repositories/ePaperTerminal/pictures/"
+directory = "/home/chrak/repositories/BadDisplay/bitmaps/"
 name = "butterfly"
 fnRaw = name+'.raw'
 fnCmp = name+'.cmp'

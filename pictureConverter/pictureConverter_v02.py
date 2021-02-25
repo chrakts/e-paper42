@@ -2,8 +2,8 @@ counter = 0
 picRaw = list()
 picComp = list()
 
-directory = "/home/chrak/Daten/Software/repositories/ePaperTerminal/pictures/"
-name = "email"
+directory = "/home/chrak/Daten/Software/repositories/BadDisplay/bitmaps/"
+name = "close-outline"
 fnRaw = name+'.raw'
 fnCmp = name+'.cmp'
 varName = "image"+name.capitalize()
